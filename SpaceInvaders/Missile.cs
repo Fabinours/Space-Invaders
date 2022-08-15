@@ -1,0 +1,117 @@
+using SpaceInvaders.Resources;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Windows.Media;
+
+namespace SpaceInvaders
+{
+    class Missile : GameObject
+    {
+        /// <summary>
+        /// Direction of movement on Y axis
+        /// </summary>
+        private int direction;
+
+        /// <summary>
+        /// Ship which shot the missile
+        /// </summary>
+        private Ship ship;
+
+        /// <summary>
+        /// AudioPlayer for missile sounds
+        /// </summary>
+        private static MediaPlayer audioPlayer;
+
+        /// <summary>
+        /// Missile constructor
+        /// </summary>
+        /// <param name="ship">The ship who shot the missile</param>
+        public Missile(Ship ship)
+        {
+            if (ship is PlayerShip) { this.direction = -1; }
+            else { this.direction = 1; }
+
+            this.ship = ship;
+            Image = SpaceInvaders.Properties.Resources.Missile;
+            position = ship.position + new Vecteur2D((ship.size.Width / 2) - Image.Width / 2, (ship.size.Height / 2) * direction);
+            moveSpeed = 200;
+            PV = 1;
+            InitAudioPlayer();
+        }
+
+        /// <summary>
+        /// Initiates the audio player
+        /// </summary>
+        private void InitAudioPlayer()
+        {
+            if (audioPlayer == null)
+            {
+                audioPlayer = new MediaPlayer();
+                audioPlayer.MediaEnded += new EventHandler(OnSoundFinish);
+                audioPlayer.Open(new Uri(Path.Combine(Environment.CurrentDirectory, @"..\..\Resources\Missile.wav")));
+                audioPlayer.Volume = 0.2;
+            }
+            audioPlayer.Play();
+        }
+
+        /// <summary>
+        /// Event which stop the current sound at its end
+        /// </summary>
+        private void OnSoundFinish(object sender, EventArgs e)
+        {
+            audioPlayer.Stop();
+        }
+
+        /// <summary>
+        /// Remove pixel around one pixel
+        /// </summary>
+        /// <param name="x">Pixel x coordinate</param>
+        public override bool IsAlive()
+        {
+            if (Game.game.IsOutOfBounds(position, size))
+            {
+                return false;
+            }
+            return base.IsAlive();
+        }
+
+        /// <summary>
+        /// Updates missile
+        /// </summary>
+        public override void Update(Game gameInstance, double deltaT)
+        {
+            position += new Vecteur2D(0, moveSpeed * deltaT * direction);
+            gameInstance.CheckCollisions(this);
+        }
+
+        /// <summary>
+        /// Checks collisions with a gameobject
+        /// </summary>
+        public void CheckCollisions(GameObject g)
+        {
+
+            if (g.Equals(ship) || (ship is EnemyShip && g is EnemyShip)) { return; }
+
+            if (g is Missile)
+            {
+                Missile m = (Missile)g;
+                if (m.ship is EnemyShip && ship is EnemyShip) { return; }
+            }
+
+            Image i = new Image(Image, position); Image i2 = new Image(g.GetImage(), g.position);
+            bool removePixel = g is Bunker ? true : false;
+            if (i.CheckCollision(i2, removePixel))
+            {
+                if (g is EnemyShip || g is PlayerShip) { g.Damage(Math.Min(g.PV, PV)); }
+                else { if (!(g is Bunker)) { g.Kill(); } }
+                Kill();
+            }
+        }
+    }
+}

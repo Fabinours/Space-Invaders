@@ -1,0 +1,9 @@
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\bin\Debug\SpaceInvaders.exe
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\bin\Debug\SpaceInvaders.pdb
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.GameForm.resources
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.Properties.Resources.resources
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.csproj.GenerateResource.cache
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.csproj.CoreCompileInputs.cache
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.exe
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.pdb
+C:\Users\fabie\OneDrive\Bureau\SaveSP\SpaceInvaders\obj\x86\Debug\SpaceInvaders.csproj.AssemblyReference.cache
